@@ -11,7 +11,8 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
-Icon.loadFont();
+
+const Stack = createStackNavigator();
 
 const styles = StyleSheet.create({
   container: {
@@ -97,14 +98,12 @@ class Header extends Component {
           }}>
           Header
         </Text>
-        <Icon name="add" size={20} color="black" />
+          <Icon name="search" style={{marginTop:15}} size={20} color="black" />
         <TextInput onChangeText={(search) => this.setState({search})} />
       </View>
     );
   }
 }
-
-const Stack = createStackNavigator();
 
 function App() {
   return (
