@@ -60,7 +60,6 @@ class HomeScreen extends Component {
 
   search = (text) => {
     var itens = this.state.itens.filter((item) => {
-      console.log(item.title.search(text));
       return item.title.search(text) > -1;
     });
 
