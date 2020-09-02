@@ -30,8 +30,10 @@ const styles = StyleSheet.create({
   },
 });
 
-function HomeScreen({navigation}) {
-  const prod = {
+class HomeScreen extends Component {
+  navigation = this.props.navigation;
+
+  prod1 = {
     id: 'r123',
     title: 'Royal Canin',
     unit_price: 100000,
@@ -41,65 +43,67 @@ function HomeScreen({navigation}) {
       'https://www.petlove.com.br/images/products/207462/large/Ra%C3%A7%C3%A3o_Royal_Canin_Mini_Adult_para_C%C3%A3es_Adultos_de_Ra%C3%A7as_Pequenas_com_10_Meses_ou_mais_de_Idade_3105614.jpg',
   };
 
-  let itens = [
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-    prod,
-  ];
+  prod2 = {
+    id: 'r123',
+    title: 'Flush',
+    unit_price: 100000,
+    quantity: 1,
+    tangible: true,
+    image:
+      'https://www.petlove.com.br/images/products/207462/large/Ra%C3%A7%C3%A3o_Royal_Canin_Mini_Adult_para_C%C3%A3es_Adultos_de_Ra%C3%A7as_Pequenas_com_10_Meses_ou_mais_de_Idade_3105614.jpg',
+  };
 
-  const search = (text) => {
-    itens = itens.filter(function (item) {
-      console.log(item.title.search(text))
+  state = {
+    itens: [this.prod1, this.prod1, this.prod2, this.prod2],
+    filtered: [this.prod1, this.prod1, this.prod2, this.prod2],
+  };
+
+  search = (text) => {
+    var itens = this.state.itens.filter((item) => {
+      console.log(item.title.search(text));
       return item.title.search(text) > -1;
     });
 
-    return itens;
+    this.setState({filtered: itens});
   };
 
-  return (
-    <View style={styles.container}>
-      {/* <Icon name="search" style={{marginTop: 15}} size={20} color="black" /> */}
-      <TextInput
-        placeholder="Pesquise"
-        style={{
-          margin: 15,
-          borderWidth: 1,
-          padding: 12,
-          paddingLeft: 20,
-          paddingRight: 20,
-          borderRadius: 20,
-          borderColor: '#888888',
-          fontSize: 18,
-          height: 50,
-        }}
-        onChangeText={(text) => search(text)}
-      />
-      <FlatList
-        data={itens}
-        keyExtractor={(item) => item.id + Math.random()}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Details', item);
-            }}>
-            <Text style={styles.item}>
-              <Image style={styles.logo} source={{uri: item.image}} />
-              {item.title}
-            </Text>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        {/* <Icon name="search" style={{marginTop: 15}} size={20} color="black" /> */}
+        <TextInput
+          placeholder="Pesquise"
+          style={{
+            marginLeft: 15,
+            marginRight: 15,
+            borderWidth: 1,
+            paddingLeft: 20,
+            paddingRight: 20,
+            borderRadius: 20,
+            borderColor: '#888888',
+            fontSize: 18,
+            height: 50,
+          }}
+          onChangeText={(text) => this.search(text)}
+        />
+        <FlatList
+          data={this.state.filtered}
+          keyExtractor={(item) => item.id + Math.random()}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => {
+                this.navigation.navigate('Details', item);
+              }}>
+              <Text style={styles.item}>
+                <Image style={styles.logo} source={{uri: item.image}} />
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+    );
+  }
 }
 
 function DetailScreen({route}) {
@@ -112,10 +116,6 @@ function DetailScreen({route}) {
 }
 
 class Header extends Component {
-  state = {
-    search: '',
-  };
-
   render() {
     return (
       <View style={{flexDirection: 'row'}}>
